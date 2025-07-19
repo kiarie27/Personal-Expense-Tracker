@@ -70,6 +70,22 @@ pipenv run python init_db.py
 # => 📂 Database initialised and seeded at expenses.db
 ```
 
+> **What does `init_db.py` do?**
+> • Creates the `expenses.db` file (if it doesn't exist).
+> • Drops and recreates the `expenses` table.
+> • Inserts five  demo expenses so `list` and `summary` have data to show.
+>
+> **Prefer to start empty?**
+> Simply skip the script—running any tracker command will auto‑create an empty database on first launch.
+>
+> **Need demo data again later?**
+> Re‑run:
+>
+> ```bash
+> pipenv run python init_db.py
+> ```
+
+
 ### 3  Run the App
 
 **Interactive menu**
