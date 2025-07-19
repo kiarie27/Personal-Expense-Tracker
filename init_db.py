@@ -19,12 +19,11 @@ from models.expense import Expense
 # Sample seed data
 # ----------------------------------------------------------------------- #
 SEED_EXPENSES = [
-    #  id |     date     |  category   | amount |  description
-    {"date": date(2025, 7, 15), "category": "food",      "amount": 12.50, "description": "Lunch burrito"},
-    {"date": date(2025, 7, 16), "category": "transport", "amount":  3.40, "description": "Bus fare"},
-    {"date": date(2025, 7, 17), "category": "groceries", "amount": 32.10, "description": "Weekly veggies"},
-    {"date": date(2025, 7, 18), "category": "entertain", "amount": 15.00, "description": "Movie night"},
-    {"date": date(2025, 7, 19), "category": "coffee",    "amount":  2.80, "description": "Flat white"},
+    {"date": date(2025, 7, 15), "category": "food",         "amount": 140.00, "description": "Ugali & sukuma wiki"},
+    {"date": date(2025, 7, 16), "category": "transport",    "amount":  80.00, "description": "Matatu CBD → Westlands"},
+    {"date": date(2025, 7, 17), "category": "mobile_money", "amount":  33.00, "description": "M-Pesa withdrawal fee"},
+    {"date": date(2025, 7, 18), "category": "coffee",       "amount": 250.00, "description": "Java House latte"},
+    {"date": date(2025, 7, 19), "category": "entertain",    "amount": 600.00, "description": "KICC rooftop ticket"},
 ]
 
 

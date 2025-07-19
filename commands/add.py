@@ -1,21 +1,6 @@
 
 
-"""
-Click command: `tracker.py add`
 
-Adds a single expense row into the `expenses` table.
-
-Usage examples:
-
-    # Defaults date to today
-    pipenv run tracker add -c food -a 12.50 -desc "Lunch"
-
-    # Explicit date
-    pipenv run tracker add --date 2025-07-18 --category transport --amount 3.40
-
-The command can also be invoked programmatically from the interactive menu
-via `add_expense_cmd.main(standalone_mode=False)`.
-"""
 import click
 from datetime import datetime, date
 from decimal import Decimal, InvalidOperation
@@ -27,15 +12,17 @@ from models.expense import Expense
 # Helper functions
 # ----------------------------------------------------------------------- #
 def _parse_date(value: str) -> date:
-    """Return a `date` object parsed from YYYY-MM-DD string."""
     try:
-        return datetime.strptime(value, "%Y-%m-%d").date()
+        parsed = datetime.strptime(value, "%Y-%m-%d").date()
     except ValueError as exc:
         raise click.BadParameter("Date must be in YYYY-MM-DD format.") from exc
 
+    if parsed > date.today():
+        raise click.BadParameter("Date cannot be in the future.")
+    return parsed
+
 
 def _validate_amount(value: str) -> Decimal:
-    """Ensure the amount is a positive decimal number."""
     try:
         amount = Decimal(value)
     except InvalidOperation as exc:
@@ -44,6 +31,19 @@ def _validate_amount(value: str) -> Decimal:
     if amount <= 0:
         raise click.BadParameter("Amount must be greater than zero.")
     return amount
+
+
+# ----------------------------------------------------------------------- #
+# Additional helper
+# ----------------------------------------------------------------------- #
+def _validate_category(value: str) -> str:
+    """Strip and validate a category (1–50 chars)."""
+    value = value.strip()
+    if not value:
+        raise click.BadParameter("Category cannot be empty.")
+    if len(value) > 50:
+        raise click.BadParameter("Category must be 50 characters or fewer.")
+    return value
 
 
 # ----------------------------------------------------------------------- #
@@ -68,15 +68,17 @@ def _validate_amount(value: str) -> Decimal:
 @click.option(
     "--description",
     "-desc",
+    prompt="Optional description",
     default="",
-    help="Optional description.",
+    show_default=False,
+    help="Optional description (press Enter to skip).",
 )
 def add_expense_cmd(date_str: str, category: str, amount: str, description: str):
-    """Callback for the `add` command."""
+
     # Validate inputs ---------------------------------------------------- #
     date_obj = _parse_date(date_str)
     amount_val = _validate_amount(amount)
-    category = category.strip()
+    category = _validate_category(category)
     description = description.strip()
 
     # Persist to DB ------------------------------------------------------ #
@@ -96,3 +98,7 @@ def add_expense_cmd(date_str: str, category: str, amount: str, description: str)
         click.secho(f"❌ Failed to save expense: {exc}", fg="red")
     finally:
         db.close()
+
+
+# Export helpers
+__all__ = ["_parse_date", "_validate_amount", "_validate_category"]

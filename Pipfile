@@ -14,7 +14,6 @@ pytest = "*"
 [requires]
 python_version = "3.12"
 
-
 [scripts]
 tracker = "python tracker.py"
 add-expense = "python tracker.py add"
