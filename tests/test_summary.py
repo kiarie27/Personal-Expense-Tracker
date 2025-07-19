@@ -21,9 +21,7 @@ def test_summary_totals_and_top(db_session, monkeypatch):
     runner = CliRunner()
     res = runner.invoke(summary_cmd, ["-n", "1"])
     assert res.exit_code == 0
-    # Only top category should appear (transport = 20)
-    # Expect at most six newline characters: table header (2 lines), one data row,
-    # a blank separator line, the grand‑total line, and the highlight line.
+ 
     assert res.output.count("\n") <= 6
     assert "transport" in res.output
     assert "food" not in res.output

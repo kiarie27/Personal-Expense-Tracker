@@ -1,26 +1,5 @@
 
 
-"""
-Click command: `tracker.py list`
-
-Lists expenses stored in the SQLite database, with optional filters
-for category and/or date range.
-
-Examples
---------
-List everything:
-    pipenv run tracker list
-
-Filter by category (case‑insensitive):
-    pipenv run tracker list -c food
-
-Filter by date range:
-    pipenv run tracker list -f 2025-07-01 -t 2025-07-31
-
-Combine filters:
-    pipenv run tracker list -c transport -f 2025-07-15
-"""
-
 import click
 from datetime import datetime, date
 from typing import Optional
@@ -30,9 +9,7 @@ from tabulate import tabulate
 from db.database import SessionLocal
 from models.expense import Expense
 
-# ----------------------------------------------------------------------- #
-# Helper functions
-# ----------------------------------------------------------------------- #
+
 def _parse_date_opt(value: Optional[str], flag: str) -> Optional[date]:
     """Parse an optional YYYY-MM-DD string into a `date` or return None."""
     if value is None:
@@ -43,9 +20,7 @@ def _parse_date_opt(value: Optional[str], flag: str) -> Optional[date]:
         raise click.BadParameter(f"{flag} must be in YYYY-MM-DD format.") from exc
 
 
-# ----------------------------------------------------------------------- #
-# Click command
-# ----------------------------------------------------------------------- #
+
 @click.command(help="List expenses, with optional category and date filters.")
 @click.option(
     "--category",
@@ -66,14 +41,14 @@ def _parse_date_opt(value: Optional[str], flag: str) -> Optional[date]:
 )
 def list_expenses_cmd(category: Optional[str], from_date_str: Optional[str], to_date_str: Optional[str]):
     """Callback for the `list` command."""
-    # 1) Validate & parse inputs ---------------------------------------- #
+
     from_date = _parse_date_opt(from_date_str, "--from-date")
     to_date = _parse_date_opt(to_date_str, "--to-date")
 
     if from_date and to_date and from_date > to_date:
         raise click.BadParameter("--from-date cannot be after --to-date.")
 
-    # 2) Build query ----------------------------------------------------- #
+
     db = SessionLocal()
     try:
         q = db.query(Expense)

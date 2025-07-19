@@ -7,7 +7,7 @@ from models.expense import Expense
 def test_add_happy_path(db_session, monkeypatch):
     runner = CliRunner()
 
-    # Monkey-patch SessionLocal inside the command so it uses our fixture.
+  
     monkeypatch.setattr("commands.add.SessionLocal", lambda: db_session)
 
     result = runner.invoke(

@@ -1,11 +1,6 @@
 
 
-"""
-SQLAlchemy ORM model for a single expense row.
 
-The table is created automatically via `Base.metadata.create_all()` in
-tracker.py (or any other bootstrap script that imports the model).
-"""
 from sqlalchemy import Column, Integer, String, Float, Date
 from db.database import Base
 
@@ -19,7 +14,6 @@ class Expense(Base):
     amount = Column(Float, nullable=False)
     description = Column(String(255), nullable=True)
 
-    # Convenience helpers -------------------------------------------------
     def __repr__(self) -> str:
         return (
             f"<Expense id={self.id} "

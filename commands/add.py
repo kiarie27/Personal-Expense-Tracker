@@ -8,9 +8,7 @@ from decimal import Decimal, InvalidOperation
 from db.database import SessionLocal
 from models.expense import Expense
 
-# ----------------------------------------------------------------------- #
-# Helper functions
-# ----------------------------------------------------------------------- #
+
 def _parse_date(value: str) -> date:
     try:
         parsed = datetime.strptime(value, "%Y-%m-%d").date()
@@ -33,9 +31,7 @@ def _validate_amount(value: str) -> Decimal:
     return amount
 
 
-# ----------------------------------------------------------------------- #
-# Additional helper
-# ----------------------------------------------------------------------- #
+
 def _validate_category(value: str) -> str:
     """Strip and validate a category (1–50 chars)."""
     value = value.strip()
@@ -46,9 +42,7 @@ def _validate_category(value: str) -> str:
     return value
 
 
-# ----------------------------------------------------------------------- #
-# Click command
-# ----------------------------------------------------------------------- #
+
 @click.command(help="Add a new expense record.")
 @click.option(
     "--date",
@@ -75,13 +69,13 @@ def _validate_category(value: str) -> str:
 )
 def add_expense_cmd(date_str: str, category: str, amount: str, description: str):
 
-    # Validate inputs ---------------------------------------------------- #
+    
     date_obj = _parse_date(date_str)
     amount_val = _validate_amount(amount)
     category = _validate_category(category)
     description = description.strip()
 
-    # Persist to DB ------------------------------------------------------ #
+
     db = SessionLocal()
     try:
         expense = Expense(

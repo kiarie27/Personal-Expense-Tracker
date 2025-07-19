@@ -1,26 +1,5 @@
 
 
-"""
-Click command: `tracker.py summary`
-
-Provides a quick spending summary, grouped by category.  You can narrow the
-data set to a single month and/or limit the output to the top‑N categories.
-
-Examples
---------
-    # Overall totals per category
-    pipenv run tracker summary
-
-    # Totals for July 2025 only
-    pipenv run tracker summary -m 2025-07
-
-    # Show just the five biggest categories (all time)
-    pipenv run tracker summary -n 5
-
-    # Top‑3 categories for July 2025
-    pipenv run tracker summary -m 2025-07 -n 3
-"""
-
 import click
 from datetime import datetime, date
 import calendar
@@ -33,9 +12,7 @@ from tabulate import tabulate
 from db.database import SessionLocal
 from models.expense import Expense
 
-# ----------------------------------------------------------------------- #
-# Helper utilities
-# ----------------------------------------------------------------------- #
+
 def _validate_month(month_str: Optional[str]) -> Optional[str]:
     """
     Accepts either:
@@ -64,9 +41,7 @@ def _validate_month(month_str: Optional[str]) -> Optional[str]:
     )
 
 
-# ----------------------------------------------------------------------- #
-# Click command
-# ----------------------------------------------------------------------- #
+
 @click.command(help="Summarize spending totals, grouped by category.")
 @click.option(
     "--month",
@@ -87,9 +62,7 @@ def summary_cmd(month: Optional[str], top: Optional[int]):
 
     db = SessionLocal()
     try:
-        # ---------------------------------------------------------------- #
-        # Build the aggregate query
-        # ---------------------------------------------------------------- #
+
         q = db.query(
             Expense.category.label("category"),
             func.sum(Expense.amount).label("total"),
@@ -109,9 +82,7 @@ def summary_cmd(month: Optional[str], top: Optional[int]):
             click.echo("No matching expenses.")
             return
 
-        # ---------------------------------------------------------------- #
-        # Display table with a grand total
-        # ---------------------------------------------------------------- #
+
         grand_total = sum(r.total for r in rows)
         table = [[idx + 1, r.category, f"{r.total:.2f}"] for idx, r in enumerate(rows)]
 
