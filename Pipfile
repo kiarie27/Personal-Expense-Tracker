@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "*"
+sqlalchemy = "*"
+tabulate = "*"
+
+[dev-packages]
+pytest = "*"
+
+[requires]
+python_version = "3.12"
+
+
+[scripts]
+tracker = "python tracker.py"
+add-expense = "python tracker.py add"
+list-expenses = "python tracker.py list"
+summary = "python tracker.py summary"
+test = "pytest -q"
