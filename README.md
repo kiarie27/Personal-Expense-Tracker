@@ -150,10 +150,7 @@ pipenv run pytest
 
 ---
 
-## 📹 Demo Video
 
-A 3‑minute walkthrough (setup → interactive mode → command mode) is available in the `docs/` folder and on Google Drive:
-`expense-tracker-demo-anthony_ngigi.mp4`
 
 ---
 
